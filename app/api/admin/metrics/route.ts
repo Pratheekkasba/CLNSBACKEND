@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+    // Await headers to force the route to be dynamic in Next.js 14 App Router
+    await headers();
     try {
         const session = await auth();
 

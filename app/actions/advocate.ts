@@ -136,7 +136,7 @@ export async function fetchMentorshipRequests() {
     }
 }
 
-export async function updateMentorshipStatus(mentorshipId: string, status: "ACTIVE" | "REJECTED") {
+export async function updateMentorshipStatus(mentorshipId: string, status: "ACTIVE" | "REJECTED" | "COMPLETED") {
     try {
         const session = await auth();
         if (!session?.user?.id || session.user.role !== "ADVOCATE") {
@@ -178,7 +178,8 @@ export async function fetchMentees() {
                         email: true,
                         college: true,
                         status: true,
-                        bio: true
+                        bio: true,
+                        resumeUrl: true
                     }
                 }
             }
@@ -419,7 +420,7 @@ export async function fetchAdvocateCases() {
             },
             include: {
                 client: {
-                    select: { name: true }
+                    select: { name: true, email: true }
                 },
                 hearings: {
                     orderBy: { date: "asc" },

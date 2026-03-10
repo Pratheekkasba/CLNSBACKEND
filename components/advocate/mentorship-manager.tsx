@@ -7,8 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Calendar, MoreHorizontal } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { MessageSquare, Calendar, MoreHorizontal, CheckCircle, Loader2 } from "lucide-react";
 import { format } from "date-fns";
+import { updateMentorshipStatus } from "@/app/actions/advocate";
+import { toast } from "sonner";
 
 interface MentorshipManagerProps {
     requests: any[]; // Using any to avoid strict type duplication for now, but usually should import types
@@ -16,6 +19,24 @@ interface MentorshipManagerProps {
 }
 
 export default function MentorshipManager({ requests, mentees }: MentorshipManagerProps) {
+    const [completingId, setCompletingId] = useState<string | null>(null);
+
+    const handleComplete = async (mentorshipId: string) => {
+        setCompletingId(mentorshipId);
+        try {
+            const result = await updateMentorshipStatus(mentorshipId, "COMPLETED");
+            if (result.success) {
+                toast.success("Mentorship marked as completed");
+            } else {
+                toast.error(result.error || "Failed to update status");
+            }
+        } catch (error) {
+            toast.error("An error occurred");
+        } finally {
+            setCompletingId(null);
+        }
+    };
+
     return (
         <Tabs defaultValue="requests" className="space-y-6">
             <TabsList className="bg-black/20 border border-white/10">
@@ -62,6 +83,26 @@ export default function MentorshipManager({ requests, mentees }: MentorshipManag
                                         </CardTitle>
                                         <p className="text-xs text-slate-400 truncate">{student.email}</p>
                                     </div>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10" disabled={completingId === student.mentorshipId}>
+                                                {completingId === student.mentorshipId ? (
+                                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                                ) : (
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                )}
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end" className="w-48 bg-slate-900 border-white/10 text-white">
+                                            <DropdownMenuItem
+                                                className="cursor-pointer focus:bg-emerald-500/20 focus:text-emerald-400"
+                                                onClick={() => handleComplete(student.mentorshipId)}
+                                            >
+                                                <CheckCircle className="mr-2 h-4 w-4" />
+                                                Mark as Completed
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </CardHeader>
                                 <CardContent className="space-y-4 text-sm">
                                     <div className="flex items-center justify-between text-slate-400">
@@ -76,10 +117,23 @@ export default function MentorshipManager({ requests, mentees }: MentorshipManag
                                     </div>
                                 </CardContent>
                                 <CardFooter className="bg-black/20 p-4 flex gap-2">
-                                    <Button variant="outline" className="w-full h-8 text-xs border-white/10 hover:bg-white/5 hover:text-white">
-                                        View Profile
+                                    <Button
+                                        variant="outline"
+                                        className="w-full h-8 text-xs border-white/10 hover:bg-white/5 hover:text-white"
+                                        onClick={() => {
+                                            if (student.resumeUrl) {
+                                                window.open(student.resumeUrl, "_blank");
+                                            } else {
+                                                alert("This student has not uploaded a resume yet.");
+                                            }
+                                        }}
+                                    >
+                                        View Resume
                                     </Button>
-                                    <Button className="w-full h-8 text-xs bg-emerald-600 hover:bg-emerald-500 text-white">
+                                    <Button
+                                        className="w-full h-8 text-xs bg-emerald-600 hover:bg-emerald-500 text-white"
+                                        onClick={() => window.location.href = `mailto:${student.email}?subject=Mentorship%20Update`}
+                                    >
                                         <MessageSquare className="mr-1.5 h-3 w-3" />
                                         Message
                                     </Button>

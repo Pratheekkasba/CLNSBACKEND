@@ -5,38 +5,85 @@ import Image from "next/image";
 import Link from "next/link";
 import { Briefcase, GraduationCap, TrendingUp, Users, CheckCircle, ArrowRight } from "lucide-react";
 
+// highlight: { border, glow, badge, divider } Tailwind color tokens
 const affiliations = [
+  {
+    title: "T-Hub",
+    logo: "/affiliations/thub-logo.png",
+    description: "India's largest innovation ecosystem and one of the world's leading startup incubators. CLNS partners with T-Hub to connect legal-tech startups and advocates within a thriving innovation network.",
+    highlight: {
+      border: "border-orange-400/50",
+      glow: "from-orange-400/50 via-red-500/30 to-orange-600/40",
+      badge: "bg-orange-500/15 text-orange-300 border-orange-400/30",
+      divider: "via-orange-400",
+      title: "group-hover:text-orange-300",
+      logoGlow: "group-hover:shadow-[0_0_20px_rgba(251,146,60,0.35)] group-hover:border-orange-400/40",
+    },
+  },
+  {
+    title: "WE Hub",
+    logo: "/affiliations/wehub-logo.png",
+    description: "Telangana's premier state-led incubator dedicated to empowering women entrepreneurs. CLNS collaborates with WE Hub to support women-led legal startups through mentorship and systemic networks.",
+    highlight: {
+      border: "border-amber-400/50",
+      glow: "from-amber-400/50 via-yellow-500/30 to-orange-500/40",
+      badge: "bg-amber-500/15 text-amber-300 border-amber-400/30",
+      divider: "via-amber-400",
+      title: "group-hover:text-amber-300",
+      logoGlow: "group-hover:shadow-[0_0_20px_rgba(251,191,36,0.35)] group-hover:border-amber-400/40",
+    },
+  },
+  {
+    title: "Ratan Tata Innovation Hub",
+    logo: "/affiliations/rtih-logo.png",
+    description: "A premier innovation hub backed by Ratan Tata's legacy. CLNS partners with RTIH to bring cutting-edge legal frameworks to innovative businesses, ensuring compliance and IP protection at scale.",
+    highlight: {
+      border: "border-purple-400/50",
+      glow: "from-purple-400/50 via-violet-500/30 to-purple-600/40",
+      badge: "bg-purple-500/15 text-purple-300 border-purple-400/30",
+      divider: "via-purple-400",
+      title: "group-hover:text-purple-300",
+      logoGlow: "group-hover:shadow-[0_0_20px_rgba(192,132,252,0.35)] group-hover:border-purple-400/40",
+    },
+  },
   {
     title: "United Nations",
     logo: "/affiliations/un-logo.jpeg",
-    description:
-      "Affiliation for NGOs, international organizations, and global legal-tech startups. Access shared resources, joint initiatives on sustainable development, and co-branded projects aligned with UN standards. Built on transparency, ethical collaboration, and long-term partnerships for meaningful impact.",
+    description: "Affiliation for NGOs, international organizations, and global legal-tech startups. Access joint initiatives on sustainable development aligned with UN standards.",
   },
   {
-    title: "UIA – Union of International Association",
+    title: "UIA – Union of International Associations",
     logo: "/affiliations/uia-logo.jpg",
-    description:
-      "Affiliation for international associations, cross-border legal networks, and global knowledge-sharing platforms. Benefit from referral networks, collaborative research initiatives, and shared best practices. Committed to ethical international cooperation and transparent long-term partnerships.",
+    description: "Affiliation for international associations and cross-border legal networks. Benefit from referral networks, collaborative research, and shared best practices.",
   },
   {
-    title: "FICL – Federation of Indian Corporate Lawyer",
+    title: "FICL – Federation of Indian Corporate Lawyers",
     logo: "/affiliations/ficl-logo.jpeg",
-    description:
-      "Affiliation for law firms, corporate legal departments, and corporate lawyers across India. Access referral networks, shared resources, joint training programs, and co-branded corporate legal initiatives. Focused on professional development, ethical collaboration, and sustainable partnerships.",
+    description: "Affiliation for law firms and corporate legal departments across India. Access referral networks, joint training programs, and co-branded corporate legal initiatives.",
   },
   {
     title: "Woxsen University",
     logo: "/partners/woxen-university.jpeg",
-    description:
-      "Affiliation for law colleges and universities seeking to bridge education with practice. Establish internship pipelines, joint research projects, and co-branded legal tech programs. Students gain real-world experience while institutions benefit from industry partnerships built on transparency and ethical collaboration.",
+    description: "Affiliation bridging legal education with practice. Internship pipelines, joint research projects, and co-branded legal tech programs for students and institutions.",
   },
   {
     title: "National Law University",
     logo: "/partners/law-universities.png",
-    description:
-      "Affiliation for law colleges and universities committed to legal education excellence. Create internship pipelines, joint initiatives in legal technology, and referral networks connecting students with opportunities. Long-term partnerships focused on preparing the next generation through transparent, ethical collaboration.",
+    description: "Affiliation committed to legal education excellence. Internship pipelines, legal technology initiatives, and referral networks preparing the next generation.",
   },
-];
+] as Array<{
+  title: string;
+  logo: string;
+  description: string;
+  highlight?: {
+    border: string;
+    glow: string;
+    badge: string;
+    divider: string;
+    title: string;
+    logoGlow: string;
+  };
+}>;
 
 const academicCollaborations = [
   {
@@ -148,42 +195,72 @@ export default function AffiliationPage() {
           </p>
         </motion.header>
 
-        {/* Cards Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 md:gap-8">
-          {affiliations.map((item, index) => (
-            <motion.article
+        {/* Featured 3 — T-Hub, WEHub, RTIH */}
+        <div className="grid gap-4 sm:grid-cols-3 mb-4">
+          {affiliations.slice(0, 3).map((item, index) => (
+            <motion.div
               key={item.title}
               variants={cardVariants}
               initial="hidden"
               animate="visible"
               custom={index}
-              className="group rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-200 ease-out hover:border-teal-400/40 hover:bg-white/[0.07] hover:shadow-[0_0_30px_rgba(34,211,238,0.2)] md:p-8"
+              className="group relative"
             >
-              {/* Logo Container */}
-              <div className="mb-6 flex justify-center">
-                <div className="flex items-center justify-center rounded-lg border border-white/10 bg-white/10 p-6 min-h-[140px] min-w-[140px] sm:min-h-[160px] sm:min-w-[160px]">
-                  <Image
-                    src={item.logo}
-                    alt={`${item.title} logo`}
-                    width={150}
-                    height={150}
-                    className="h-full w-full max-h-[120px] max-w-[120px] object-contain sm:max-h-[140px] sm:max-w-[140px]"
-                    loading="lazy"
-                    quality={90}
-                  />
-                </div>
-              </div>
+              {/* Colored gradient border glow */}
+              <div className={`absolute -inset-[1px] rounded-2xl bg-gradient-to-br ${item.highlight!.glow} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} style={{ filter: "blur(0.5px)" }} />
 
-              {/* Text Content */}
-              <div className="text-center">
-                <h3 className="mb-3 text-xl font-bold leading-tight text-white transition-colors group-hover:text-teal-300 md:text-2xl">
+              <article className={`relative h-full flex flex-col items-center text-center rounded-2xl border ${item.highlight!.border} bg-gradient-to-b from-slate-900/90 to-slate-950/90 backdrop-blur-xl p-5 overflow-hidden transition-transform duration-300 ease-out group-hover:-translate-y-1`}>
+
+                {/* Featured badge */}
+                <span className={`absolute top-3 right-3 text-[10px] font-semibold px-2 py-0.5 rounded-full border ${item.highlight!.badge}`}>
+                  Featured
+                </span>
+
+                {/* Logo */}
+                <div className={`relative z-10 mb-4 flex h-[72px] w-[72px] items-center justify-center rounded-xl border border-white/10 bg-white/95 p-2 shadow-md transition-all duration-300 ${item.highlight!.logoGlow}`}>
+                  <Image src={item.logo} alt={`${item.title} logo`} width={60} height={60} className="h-full w-full object-contain" loading="lazy" quality={90} />
+                </div>
+
+                {/* Divider */}
+                <div className={`relative z-10 mb-3 h-[2px] w-6 rounded-full bg-gradient-to-r from-transparent ${item.highlight!.divider} to-transparent opacity-60 transition-all duration-500 group-hover:w-12 group-hover:opacity-100`} />
+
+                <h3 className={`relative z-10 mb-2 text-sm font-bold leading-tight text-white transition-colors duration-200 ${item.highlight!.title}`}>
                   {item.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-white/60 md:text-base">
+                <p className="relative z-10 text-xs leading-relaxed text-white/50 group-hover:text-white/65 transition-colors duration-200">
                   {item.description}
                 </p>
-              </div>
-            </motion.article>
+              </article>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Standard 5 cards */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {affiliations.slice(3).map((item, index) => (
+            <motion.div
+              key={item.title}
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
+              custom={index + 3}
+              className="group relative"
+            >
+              <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-teal-400/40 via-cyan-500/25 to-blue-600/35 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ filter: "blur(0.5px)" }} />
+
+              <article className="relative h-full flex flex-col items-center text-center rounded-2xl border border-white/8 bg-gradient-to-b from-slate-900/90 to-slate-950/90 backdrop-blur-xl p-4 overflow-hidden transition-transform duration-300 ease-out group-hover:-translate-y-1">
+                <div className="relative z-10 mb-3 flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-white/10 bg-white/95 p-2 shadow-sm transition-all duration-300 group-hover:border-teal-400/40 group-hover:shadow-[0_0_14px_rgba(34,211,238,0.2)]">
+                  <Image src={item.logo} alt={`${item.title} logo`} width={48} height={48} className="h-full w-full object-contain" loading="lazy" quality={90} />
+                </div>
+                <div className="relative z-10 mb-2 h-[1.5px] w-5 rounded-full bg-gradient-to-r from-transparent via-teal-400 to-transparent opacity-40 transition-all duration-500 group-hover:w-10 group-hover:opacity-90" />
+                <h3 className="relative z-10 mb-1.5 text-xs font-bold leading-tight text-white transition-colors duration-200 group-hover:text-teal-300">
+                  {item.title}
+                </h3>
+                <p className="relative z-10 text-[11px] leading-relaxed text-white/45 group-hover:text-white/60 transition-colors duration-200">
+                  {item.description}
+                </p>
+              </article>
+            </motion.div>
           ))}
         </div>
 
@@ -207,7 +284,7 @@ export default function AffiliationPage() {
         <section className="relative my-32 overflow-hidden">
           {/* Smooth dark-to-teal gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-navy-950 to-teal-950" />
-          
+
           <div className="relative z-10 mx-auto max-w-7xl px-6 py-24 md:px-8 lg:py-32">
             <div className="mx-auto max-w-6xl">
               <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
@@ -223,7 +300,7 @@ export default function AffiliationPage() {
                     <h2 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl md:text-5xl lg:text-6xl">
                       Affiliations with National Law Universities
                     </h2>
-                    
+
                     <p className="max-w-xl text-lg leading-relaxed text-white/80 md:text-xl">
                       CLNS collaborates exclusively with National Law Universities across India, delivering premium academic partnerships, research initiatives, and professional training programmes that elevate legal education.
                     </p>

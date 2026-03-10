@@ -1,5 +1,5 @@
-import { fetchAdvocateStats } from "@/app/actions/advocate";
-import { DashboardContent } from "@/app/dashboard/student/dashboard-content"; // Reuse? Or create custom?
+import { fetchAdvocateStats, fetchAdvocateCases } from "@/app/actions/advocate";
+import { ClientBookingsList } from "@/components/advocate/client-bookings-list";
 // Let's create a custom dashboard view for Advocates since the metrics are different.
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, FileText, UserPlus, Clock } from "lucide-react";
@@ -9,7 +9,10 @@ import { Button } from "@/components/ui/button";
 export const dynamic = "force-dynamic";
 
 export default async function AdvocateDashboardPage() {
-    const stats = await fetchAdvocateStats();
+    const [stats, cases] = await Promise.all([
+        fetchAdvocateStats(),
+        fetchAdvocateCases(),
+    ]);
 
     if (!stats) {
         return (
@@ -86,6 +89,18 @@ export default async function AdvocateDashboardPage() {
                         </Link>
                     </CardContent>
                 </Card>
+            </div>
+
+            {/* Client Consultation Bookings */}
+            <div className="pt-6 border-t border-white/10">
+                <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        <Users className="h-5 w-5 text-emerald-400" />
+                        Client Bookings
+                    </h3>
+                </div>
+
+                <ClientBookingsList cases={cases} />
             </div>
         </div>
     );

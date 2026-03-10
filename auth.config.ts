@@ -35,7 +35,7 @@ export const authConfig = {
             if (token && session.user) {
                 session.user.role = token.role;
                 session.user.id = token.id;
-                
+
                 // Fetch fresh user data from database to ensure name, email, and image are up-to-date
                 if (token.id) {
                     try {
@@ -46,14 +46,12 @@ export const authConfig = {
                                 name: true,
                                 email: true,
                                 role: true,
-                                imageUrl: true,
                             }
                         });
                         if (user) {
                             session.user.name = user.name;
                             session.user.email = user.email;
                             session.user.role = user.role;
-                            session.user.image = user.imageUrl || undefined;
                         }
                     } catch (error: any) {
                         // Silently fail if database access is not available (e.g., during build)

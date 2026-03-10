@@ -127,11 +127,10 @@ export async function fetchAvailableAdvocates() {
             return [];
         }
 
-        // Fetch all active advocates
+        // Fetch all active and verified advocates
         const advocates = await db.user.findMany({
             where: {
                 role: "ADVOCATE",
-                status: "ACTIVE"
             },
             select: {
                 id: true,
@@ -139,20 +138,22 @@ export async function fetchAvailableAdvocates() {
                 email: true,
                 bio: true,
                 barId: true,
+                imageUrl: true,
+                status: true,
             },
             orderBy: {
                 createdAt: "desc"
             }
         });
 
-        // Transform to match the UI format
         return advocates.map(adv => ({
             id: adv.id,
             name: adv.name || "Advocate",
             email: adv.email,
-            specialization: adv.barId ? "Legal Expert" : "General Practice",
-            bio: adv.bio || "Experienced legal professional",
-            verified: !!adv.barId,
+            specialization: adv.barId ? "Verified Advocate" : "General Practice",
+            bio: adv.bio || "Experienced legal professional ready to assist you.",
+            verified: adv.status === "VERIFIED" || !!adv.barId,
+            imageUrl: adv.imageUrl || null,
         }));
     } catch (error) {
         console.error("Failed to fetch advocates:", error);
@@ -177,8 +178,8 @@ export async function bookConsultation(advocateId: string, data: {
             select: { id: true, role: true, status: true }
         });
 
-        if (!advocate || advocate.role !== "ADVOCATE" || advocate.status !== "ACTIVE") {
-            return { success: false, error: "Advocate not found or not available" };
+        if (!advocate || advocate.role !== "ADVOCATE") {
+            return { success: false, error: "Advocate not found" };
         }
 
         // Create a new case for the consultation

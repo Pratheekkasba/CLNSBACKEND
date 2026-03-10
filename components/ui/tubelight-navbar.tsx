@@ -28,7 +28,7 @@ export const NavBar = memo(function NavBar({ items, className, showAuthButtons =
   const [isMobile, setIsMobile] = useState(false);
   const linkRefs = useRef<{ [key: string]: HTMLAnchorElement | null }>({});
   const containerRef = useRef<HTMLDivElement>(null);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   // Determine active tab based on current pathname
   const getActiveTab = () => {
@@ -66,12 +66,12 @@ export const NavBar = memo(function NavBar({ items, className, showAuthButtons =
     >
       <div ref={containerRef} className="relative mx-auto flex w-full max-w-4xl items-center gap-2 sm:gap-3 rounded-2xl border border-white/60 px-2 sm:px-4 py-2 sm:py-2.5 shadow-[0_15px_40px_rgba(15,23,42,0.08)] backdrop-blur-[12px] transition-colors dark:border-white/10 dark:shadow-[0_20px_45px_rgba(2,6,23,0.65)]" style={{ clipPath: "inset(0 round 1rem)" }}>
         <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-          <Image 
-            src="/clns-logo.png" 
-            alt="CLNS logo" 
-            width={24} 
-            height={24} 
-            className="h-5 w-5 sm:h-6 sm:w-6 object-contain" 
+          <Image
+            src="/clns-logo.png"
+            alt="CLNS logo"
+            width={24}
+            height={24}
+            className="h-5 w-5 sm:h-6 sm:w-6 object-contain"
           />
           <span className="text-sm sm:text-base font-semibold text-slate-700 dark:text-white">CLNS</span>
         </div>
@@ -121,9 +121,9 @@ export const NavBar = memo(function NavBar({ items, className, showAuthButtons =
                     layoutId="tubelight-bar"
                     className="absolute bottom-0 left-1/2 h-[2px] w-12 sm:w-16 -translate-x-1/2 rounded-full bg-gradient-to-r from-transparent via-blue-500 to-transparent shadow-[0_0_12px_rgba(59,130,246,1),0_0_24px_rgba(59,130,246,0.5)] dark:via-cyan-300 dark:shadow-[0_0_15px_rgba(34,211,238,1),0_0_30px_rgba(34,211,238,0.5)]"
                     style={{ borderRadius: "9999px" }}
-                    transition={{ 
-                      type: "spring", 
-                      stiffness: 500, 
+                    transition={{
+                      type: "spring",
+                      stiffness: 500,
                       damping: 35,
                       duration: 0.2,
                     }}
@@ -136,10 +136,15 @@ export const NavBar = memo(function NavBar({ items, className, showAuthButtons =
 
         {showAuthButtons && (
           <div className="flex items-center gap-2 flex-shrink-0">
-            {session ? (
+            {status === "loading" ? (
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-16 sm:h-9 sm:w-20 rounded-md bg-slate-200/50 dark:bg-slate-800/50 animate-pulse" />
+                <div className="h-8 w-20 sm:h-9 sm:w-24 rounded-md bg-slate-200/50 dark:bg-slate-800/50 animate-pulse" />
+              </div>
+            ) : session ? (
               <Link href={`/dashboard/${session.user?.role?.toLowerCase() || 'student'}`}>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   size="sm"
                   className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 text-slate-600 hover:text-blue-600 dark:text-white/70 dark:hover:text-cyan-100"
                 >
@@ -149,8 +154,8 @@ export const NavBar = memo(function NavBar({ items, className, showAuthButtons =
             ) : (
               <>
                 <Link href="/login">
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     size="sm"
                     className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 text-slate-600 hover:text-blue-600 dark:text-white/70 dark:hover:text-cyan-100 flex items-center gap-1.5"
                   >
@@ -159,7 +164,7 @@ export const NavBar = memo(function NavBar({ items, className, showAuthButtons =
                   </Button>
                 </Link>
                 <Link href="/signup">
-                  <Button 
+                  <Button
                     size="sm"
                     className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-500 text-white dark:bg-cyan-500 dark:hover:bg-cyan-400 flex items-center gap-1.5"
                   >

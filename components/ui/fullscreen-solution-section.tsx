@@ -24,7 +24,7 @@ const personaData: Record<
       },
       {
         title: "Case Tracking",
-        description: "Unified timelines, document vaults, and smart reminders across every jurisdiction.",
+        description: "Unified timelines and smart reminders across every jurisdiction.",
       },
       {
         title: "Real-Time Assistance",

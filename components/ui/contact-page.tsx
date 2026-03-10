@@ -58,7 +58,7 @@ function extractStateFromAddress(address: string, city: string): string {
   if (address.includes("Rajasthan")) return "Rajasthan, India";
   if (address.includes("Andhra Pradesh")) return "Andhra Pradesh, India";
   if (address.includes("Maharashtra")) return "Maharashtra, India";
-  
+
   // Fallback: infer from city name
   if (city.includes("Hyderabad")) return "Telangana, India";
   if (city.includes("Delhi")) return "Delhi, India";
@@ -66,7 +66,7 @@ function extractStateFromAddress(address: string, city: string): string {
   if (city.includes("Kota")) return "Rajasthan, India";
   if (city === "Andhra Pradesh") return "Andhra Pradesh, India";
   if (city === "Maharashtra") return "Maharashtra, India";
-  
+
   return "India";
 }
 
@@ -76,16 +76,16 @@ function extractAddressWithoutState(address: string, city: string): string {
   if (address.includes("Service coverage")) {
     return address;
   }
-  
+
   // Remove state and country from the end
   let cleanAddress = address
     .replace(/,?\s*(Telangana|Delhi|Uttar Pradesh|Rajasthan|Andhra Pradesh|Maharashtra),?\s*India\.?/gi, "")
     .replace(/,?\s*India\.?$/gi, "")
     .trim();
-  
+
   // Remove trailing comma or dash if present
   cleanAddress = cleanAddress.replace(/[,–-]+$/, "").trim();
-  
+
   return cleanAddress;
 }
 
@@ -178,7 +178,7 @@ const officeTableData: OfficeData[] = officeTableDataRaw.map((row) => ({
 // Group offices by state
 function groupOfficesByState(offices: OfficeData[]) {
   const grouped: Record<string, OfficeData[]> = {};
-  
+
   offices.forEach((office) => {
     const stateName = office.state.split(',')[0]; // Get state name without "India"
     if (!grouped[stateName]) {
@@ -186,7 +186,7 @@ function groupOfficesByState(offices: OfficeData[]) {
     }
     grouped[stateName].push(office);
   });
-  
+
   return grouped;
 }
 
@@ -292,7 +292,7 @@ export function ContactPage() {
                 <span className="font-semibold text-teal-300">Student Support</span> Internships, dashboard help, learning paths.
               </li>
               <li className="rounded-lg border border-white/10 bg-white/5 p-4 text-white/70 backdrop-blur-xl">
-                <span className="font-semibold text-teal-300">Advocate Support</span> Document vault, billing, assignments.
+                <span className="font-semibold text-teal-300">Advocate Support</span> Billing, case management, assignments.
               </li>
             </ul>
           </div>
@@ -462,11 +462,11 @@ export function ContactLocationsSection() {
 
 export default ContactLocationsSection;
 
-function OfficeCard({ 
-  office, 
-  index 
-}: { 
-  office: { name: string; address: string; phone: string; badge?: string }; 
+function OfficeCard({
+  office,
+  index
+}: {
+  office: { name: string; address: string; phone: string; badge?: string };
   index: number;
 }) {
   return (
@@ -489,12 +489,12 @@ function OfficeCard({
             )}
           </div>
         </div>
-        
+
         {/* Address as subtitle */}
         <p className="mb-6 flex-1 text-sm leading-relaxed text-white/60">
           {office.address}
         </p>
-        
+
         {/* Contact Button */}
         <a
           href={`tel:${office.phone}`}

@@ -79,8 +79,8 @@ export async function fetchMentors() {
     try {
         const mentors = await db.user.findMany({
             where: {
-                role: { in: ["ADVOCATE", "ADMIN"] }, // Assuming Advocates and Admins can be mentors
-                status: "ACTIVE" // Only active users
+                role: "ADVOCATE", // Only Advocates can be mentors
+                status: { in: ["ACTIVE", "VERIFIED"] } // Active or verified only
             },
             select: {
                 id: true,
@@ -130,5 +130,35 @@ export async function requestMentorship(mentorId: string) {
     } catch (error) {
         console.error("Failed to request mentorship:", error);
         return { success: false, error: "Failed to request mentorship" };
+    }
+}
+
+export async function fetchMyMentors() {
+    try {
+        const session = await auth();
+        if (!session?.user?.id) return [];
+
+        const mentorships = await db.mentorship.findMany({
+            where: {
+                studentId: session.user.id,
+            },
+            include: {
+                mentor: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        bio: true,
+                        imageUrl: true,
+                        barId: true,
+                    }
+                }
+            },
+            orderBy: { updatedAt: "desc" }
+        });
+        return mentorships;
+    } catch (error) {
+        console.error("Failed to fetch my mentors:", error);
+        return [];
     }
 }

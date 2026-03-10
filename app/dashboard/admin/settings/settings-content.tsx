@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { updateProfile } from "@/app/actions/admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,30 +28,26 @@ export function SettingsContent({ user }: SettingsContentProps) {
     const router = useRouter();
     const { update: updateSession } = useSession();
 
-    // System settings states - stored in localStorage for now (can be moved to database)
-    const [maintenanceMode, setMaintenanceMode] = useState(() => {
-        if (typeof window !== 'undefined') {
-            return localStorage.getItem('maintenanceMode') === 'true';
-        }
-        return false;
-    });
-    const [registrationOpen, setRegistrationOpen] = useState(() => {
-        if (typeof window !== 'undefined') {
-            const stored = localStorage.getItem('registrationOpen');
-            return stored === null ? true : stored === 'true';
-        }
-        return true;
-    });
+    // Maintenance mode — persisted via API to SystemLog DB
+    const [maintenanceMode, setMaintenanceMode] = useState(false);
+    const [registrationOpen, setRegistrationOpen] = useState(true);
+
+    useEffect(() => {
+        fetch("/api/admin/maintenance")
+            .then(r => r.json())
+            .then(data => setMaintenanceMode(data.maintenanceMode ?? false))
+            .catch(() => { });
+    }, []);
 
     const handleProfileUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         // Validate name
         if (!name || name.trim().length === 0) {
             toast.error("Name cannot be empty");
             return;
         }
-        
+
         setLoading(true);
         try {
             const result = await updateProfile({ name: name.trim(), email: user.email });
@@ -72,20 +68,17 @@ export function SettingsContent({ user }: SettingsContentProps) {
     const handleSystemSettingsUpdate = async () => {
         setSavingSystem(true);
         try {
-            // Save to localStorage (can be migrated to database later)
-            if (typeof window !== 'undefined') {
-                localStorage.setItem('maintenanceMode', maintenanceMode.toString());
-                localStorage.setItem('registrationOpen', registrationOpen.toString());
-            }
-            
-            // TODO: In production, save to database
-            // await updateSystemSettings({ maintenanceMode, registrationOpen });
-            
+            const res = await fetch("/api/admin/maintenance", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ enabled: maintenanceMode }),
+            });
+            if (!res.ok) throw new Error("Failed");
             toast.success("System settings updated successfully");
-            
-            // Show warning if maintenance mode is enabled
             if (maintenanceMode) {
-                toast.warning("Maintenance mode is now active. Non-admin users will be blocked.");
+                toast.warning("Maintenance mode is now active. Non-admin users will be redirected.");
+            } else {
+                toast.info("Maintenance mode disabled. Platform is open to all users.");
             }
         } catch (error) {
             toast.error("Failed to update system settings");
@@ -159,7 +152,7 @@ export function SettingsContent({ user }: SettingsContentProps) {
                             </div>
                             <Switch checked={registrationOpen} onCheckedChange={setRegistrationOpen} />
                         </div>
-                        <Button 
+                        <Button
                             onClick={handleSystemSettingsUpdate}
                             disabled={savingSystem}
                             className="bg-purple-600 hover:bg-purple-500 text-white w-full sm:w-auto"

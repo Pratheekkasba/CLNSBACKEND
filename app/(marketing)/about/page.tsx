@@ -41,7 +41,7 @@ const personas = [
       "Verified advocates",
       "₹1 consultations",
       "Transparent pricing",
-      "Case updates & document vault",
+      "Real-time case updates",
       "Multi-category legal help",
     ],
     gradient: "from-teal-500/20 via-cyan-500/10 to-blue-500/20",
@@ -165,7 +165,7 @@ export default function AboutPage() {
           className="absolute inset-0 bg-gradient-to-b from-teal-950/30 via-navy-950/40 to-black transform-gpu"
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.2),transparent_70%)] blur-[140px] transform-gpu" />
-        
+
         {/* Shimmer Effect - Optimized */}
         <motion.div
           animate={{
@@ -216,7 +216,7 @@ export default function AboutPage() {
       <section className="relative px-6 py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-[#041424] via-[#020916] to-[#010207]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,197,204,0.15),transparent_65%)]" />
-        
+
         <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-16 lg:flex-row lg:items-start">
           {/* Left: Text Content */}
           <motion.div
@@ -262,7 +262,7 @@ export default function AboutPage() {
                 CLNS is the first unified{" "}
                 <span className="text-teal-300 font-semibold">legal-tech ecosystem</span> connecting clients, students, and advocates through a single digital platform that brings legal help, learning, and case management into one modern workflow.
               </motion.p>
-              
+
               <motion.p
                 initial="initial"
                 whileInView="animate"
@@ -273,7 +273,7 @@ export default function AboutPage() {
                 We eliminate the fear, confusion, and high cost of legal processes by blending technology with{" "}
                 <span className="text-teal-300 font-semibold">verified advocates</span> and real-world learning making legal access transparent, fast, and empowering for everyone.
               </motion.p>
-              
+
               <motion.p
                 initial="initial"
                 whileInView="animate"
@@ -300,11 +300,11 @@ export default function AboutPage() {
             <div className="group relative w-full max-w-md rounded-[36px] border border-white/10 bg-white/5 p-10 shadow-[0_50px_120px_rgba(0,0,0,0.6)] backdrop-blur-xl transition-all duration-200 ease-out hover:-translate-y-1 hover:border-teal-400/30 hover:shadow-[0_60px_150px_rgba(34,211,238,0.25)] transform-gpu" style={{ backfaceVisibility: "hidden" }}>
               {/* Gradient Border */}
               <div className="absolute inset-0 rounded-[36px] bg-gradient-to-br from-teal-500/20 via-cyan-500/10 to-blue-500/20 opacity-0 transition-opacity group-hover:opacity-100" />
-              
+
               {/* Internal Grid Pattern */}
               <div className="absolute inset-[24px] rounded-[30px] border border-white/10 opacity-30" />
               <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(60deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[length:40px_40px]" />
-              
+
               {/* Ambient Shadow */}
               <div className="absolute -inset-4 bg-gradient-to-br from-teal-500/10 via-transparent to-blue-500/10 blur-2xl opacity-0 transition-opacity group-hover:opacity-100" />
 
@@ -326,11 +326,11 @@ export default function AboutPage() {
                   />
                   Unified Justice Grid
                 </div>
-                
+
                 <p className="mt-6 text-lg leading-relaxed text-white/85">
                   Real-time case tracking, ₹1 consults, and digital practice tools in one connected system.
                 </p>
-                
+
                 <div className="mt-10 grid grid-cols-2 gap-6 text-sm">
                   <div className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur">
                     <p className="text-3xl font-bold text-white">24/7</p>
@@ -363,7 +363,7 @@ export default function AboutPage() {
             <h2 className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl">The CLNS Ecosystem</h2>
             <p className="mt-4 sm:mt-6 text-base sm:text-lg text-white/75 max-w-2xl mx-auto">One platform. Five personas. Endless possibilities.</p>
           </motion.div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 sm:gap-8 lg:gap-6 xl:gap-8 items-stretch">
             {personas.map((persona, index) => (
               <PersonaCard key={persona.title} persona={persona} index={index} />
@@ -481,7 +481,7 @@ function StatCard({ stat, index }: { stat: StatConfig; index: number }) {
     >
       {/* Glass Gradient Overlay */}
       <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/2 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-      
+
       {/* Gradient Border */}
       <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-teal-500/20 via-cyan-500/10 to-blue-500/20 opacity-0 transition-opacity group-hover:opacity-100" />
 
@@ -493,7 +493,7 @@ function StatCard({ stat, index }: { stat: StatConfig; index: number }) {
       >
         <Icon className="h-6 w-6" />
       </motion.div>
-      
+
       <div className="relative z-10">
         <p className="text-4xl font-bold text-white">
           {value.toLocaleString()}
@@ -556,7 +556,7 @@ function PersonaCard({
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight">{persona.title}</h3>
         </div>
-        
+
         {/* Features List */}
         <div className="flex-1 space-y-3 sm:space-y-4">
           {persona.highlights.map((item, idx) => (

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,45 +7,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  PROSPECT
-  CLIENT
-  ADVOCATE
-  ADMIN
-  STUDENT
-}
-
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String?
-  password  String
-  role      UserRole @default(PROSPECT)
-  status    UserStatus @default(PENDING)
-  
-  cases       Case[] @relation("ClientCases")
-  advocateCases Case[] @relation("AdvocateCases")
-  mentorshipsAsMentor Mentorship[] @relation("Mentor")
-  mentorshipsAsStudent Mentorship[] @relation("Student")
+  id                     String                  @id @default(uuid())
+  role                   UserRole                @default(PROSPECT)
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  password               String
+  status                 UserStatus              @default(PENDING)
+  email                  String                  @unique
+  name                   String?
+  barId                  String?
+  bio                    String?
+  college                String?
+  resumeUrl              String?
+  imageUrl               String?
+  advocateCases          Case[]                  @relation("AdvocateCases")
+  cases                  Case[]                  @relation("ClientCases")
   internshipApplications InternshipApplication[]
-  postedInternships InternshipPosting[] // Relation to postings created by this user
-  createdPrograms   MentorshipProgram[] // Relation to mentorship programs created by this user
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  verificationRequests VerificationRequest[]
-  
-  // Profile Fields
-  bio       String?
-  college   String?
-  barId     String?
-  resumeUrl String?
-  imageUrl  String?  // Profile photo URL
+  postedInternships      InternshipPosting[]
+  mentorshipsAsMentor    Mentorship[]            @relation("Mentor")
+  mentorshipsAsStudent   Mentorship[]            @relation("Student")
+  createdPrograms        MentorshipProgram[]
+  verificationRequests   VerificationRequest[]
 
   @@map("users")
 }
-
 
 model SystemLog {
   id          String   @id @default(uuid())
@@ -59,13 +42,118 @@ model SystemLog {
 }
 
 model VerificationRequest {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  status    String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  id          String   @id @default(uuid())
+  userId      String
+  status      String   @default("PENDING")
   documentUrl String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Case {
+  id          String     @id @default(uuid())
+  title       String
+  status      CaseStatus @default(OPEN)
+  clientId    String
+  advocateId  String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  description String?
+  type        String     @default("General")
+  advocate    User?      @relation("AdvocateCases", fields: [advocateId], references: [id])
+  client      User       @relation("ClientCases", fields: [clientId], references: [id])
+  hearings    Hearing[]
+}
+
+model Hearing {
+  id        String   @id @default(uuid())
+  date      DateTime
+  title     String
+  court     String?
+  caseId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}
+
+model Mentorship {
+  id                 String              @id @default(uuid())
+  status             String              @default("ACTIVE")
+  mentorId           String
+  studentId          String
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  programId          String?
+  mentor             User                @relation("Mentor", fields: [mentorId], references: [id])
+  program            MentorshipProgram?  @relation(fields: [programId], references: [id])
+  student            User                @relation("Student", fields: [studentId], references: [id])
+  mentorshipSessions MentorshipSession[]
+}
+
+model MentorshipSession {
+  id           String     @id @default(uuid())
+  mentorshipId String
+  date         DateTime
+  duration     Int
+  notes        String?
+  status       String     @default("SCHEDULED")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  mentorship   Mentorship @relation(fields: [mentorshipId], references: [id])
+}
+
+model MentorshipProgram {
+  id          String       @id @default(uuid())
+  title       String
+  focusArea   String
+  description String
+  duration    String
+  capacity    Int
+  status      String       @default("OPEN")
+  authorId    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  mentorships Mentorship[]
+  author      User         @relation(fields: [authorId], references: [id])
+}
+
+model InternshipPosting {
+  id           String                  @id @default(uuid())
+  title        String
+  company      String
+  location     String
+  description  String
+  type         String
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  authorId     String?
+  deadline     DateTime?
+  duration     String?
+  stipend      String?
+  status       String                  @default("OPEN")
+  applications InternshipApplication[]
+  author       User?                   @relation(fields: [authorId], references: [id])
+}
+
+model InternshipApplication {
+  id        String            @id @default(uuid())
+  status    String            @default("PENDING")
+  studentId String
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  postingId String
+  coverNote String?
+  posting   InternshipPosting @relation(fields: [postingId], references: [id])
+  student   User              @relation(fields: [studentId], references: [id])
+}
+
+enum UserRole {
+  PROSPECT
+  CLIENT
+  ADVOCATE
+  ADMIN
+  STUDENT
 }
 
 enum UserStatus {
@@ -80,123 +168,4 @@ enum CaseStatus {
   OPEN
   CLOSED
   PENDING
-}
-
-model Case {
-  id        String   @id @default(uuid())
-  title     String
-  description String?
-  type      String   @default("General") // e.g. Criminal, Civil, Corporate
-  status    CaseStatus @default(OPEN)
-  
-  clientId  String
-  client    User     @relation("ClientCases", fields: [clientId], references: [id])
-  
-  advocateId String?
-  advocate   User?   @relation("AdvocateCases", fields: [advocateId], references: [id])
-  
-  hearings  Hearing[]
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Hearing {
-  id        String   @id @default(uuid())
-  date      DateTime
-  title     String
-  court     String?
-  
-  caseId    String
-  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Mentorship {
-  id        String   @id @default(uuid())
-  status    String   @default("ACTIVE") // ACTIVE, COMPLETED
-  
-  mentorId  String
-  mentor    User     @relation("Mentor", fields: [mentorId], references: [id])
-  
-  studentId String
-  student   User     @relation("Student", fields: [studentId], references: [id])
-  
-  programId String?
-  program   MentorshipProgram? @relation(fields: [programId], references: [id])
-  
-  mentorshipSessions MentorshipSession[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model MentorshipSession {
-  id           String   @id @default(uuid())
-  mentorshipId String
-  mentorship   Mentorship @relation(fields: [mentorshipId], references: [id])
-  date         DateTime
-  duration     Int      // in minutes
-  notes        String?
-  status       String   @default("SCHEDULED") // SCHEDULED, COMPLETED, CANCELLED
-  
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
-model MentorshipProgram {
-  id          String   @id @default(uuid())
-  title       String
-  focusArea   String   // Criminal, Civil, Corporate
-  description String
-  duration    String   // e.g. "4 Weeks"
-  capacity    Int
-  status      String   @default("OPEN") // OPEN, CLOSED
-
-  authorId    String
-  author      User     @relation(fields: [authorId], references: [id])
-
-  mentorships Mentorship[]
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model InternshipPosting {
-  id          String   @id @default(uuid())
-  title       String
-  company     String
-  location    String
-  description String
-  type        String // Remote, Hybrid, On-site
-
-  stipend     String?
-  duration    String?
-  deadline    DateTime?
-  status      String   @default("OPEN") // OPEN, CLOSED, PAUSED
-  
-  authorId    String? 
-  author      User?   @relation(fields: [authorId], references: [id])
-  
-  applications InternshipApplication[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model InternshipApplication {
-  id        String   @id @default(uuid())
-  status    String   @default("PENDING") // PENDING, ACCEPTED, REJECTED
-  coverNote String?
-  
-  studentId String
-  student   User     @relation(fields: [studentId], references: [id])
-  
-  postingId String
-  posting   InternshipPosting @relation(fields: [postingId], references: [id])
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

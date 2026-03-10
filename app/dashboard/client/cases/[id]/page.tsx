@@ -130,18 +130,6 @@ export default async function ClientCaseDetailsPage({ params }: { params: { id: 
                         </CardContent>
                     </Card>
 
-                    {/* Documents Placeholer */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-lg flex items-center gap-2">
-                                <FileText className="h-5 w-5 text-amber-400" />
-                                Documents
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-sm text-slate-500 italic">Document access coming soon.</p>
-                        </CardContent>
-                    </Card>
                 </div>
             </div>
         </div>

@@ -53,11 +53,6 @@ const clientServices = [
     description: "Monitor your case progress in real-time",
   },
   {
-    icon: FileText,
-    title: "Digital document vault",
-    description: "Secure storage for all your legal documents",
-  },
-  {
     icon: MessageSquare,
     title: "Real-time Legal AI Chatbox",
     description: "Instant answers to your legal questions",
@@ -366,7 +361,7 @@ const specialFeatures = [
   {
     title: "Client Management Suite",
     icon: Briefcase,
-    features: ["Dashboard view", "Case tracker", "Document vault", "Communication hub"],
+    features: ["Dashboard view", "Case tracker", "Communication hub"],
     gradient: "from-teal-500/20 via-cyan-500/10 to-blue-500/20",
   },
   {
@@ -416,10 +411,10 @@ export default function ServicesPage() {
           className="absolute inset-0 bg-gradient-to-b from-navy-950/50 via-teal-950/40 to-black"
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.2),transparent_70%)] blur-[140px]" />
-        
+
         {/* Soft Spotlight */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(34,211,238,0.15),transparent_60%)]" />
-        
+
         {/* Floating Glowing Particles */}
         <div className="absolute inset-0">
           {[...Array(12)].map((_, i) => (
@@ -480,7 +475,7 @@ export default function ServicesPage() {
       <section id="clients" className="relative overflow-hidden px-6 py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-[#041424] via-[#020916] to-[#010207]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,197,204,0.15),transparent_65%)]" />
-        
+
         <div className="relative z-10 mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -523,7 +518,7 @@ export default function ServicesPage() {
       <section id="students" className="relative overflow-hidden px-6 py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-[#041424] via-[#020916] to-[#010207]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,197,204,0.15),transparent_65%)]" />
-        
+
         <div className="relative z-10 mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -566,7 +561,7 @@ export default function ServicesPage() {
       <section id="advocates" className="relative overflow-hidden px-6 py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-[#041424] via-[#020916] to-[#010207]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(34,197,204,0.15),transparent_65%)]" />
-        
+
         <div className="relative z-10 mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -611,7 +606,7 @@ export default function ServicesPage() {
       <section id="startups" className="relative overflow-hidden px-6 py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-[#041424] via-[#020916] to-[#010207]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(168,85,247,0.15),transparent_65%)]" />
-        
+
         <div className="relative z-10 mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -654,7 +649,7 @@ export default function ServicesPage() {
       <section id="msme" className="relative overflow-hidden px-6 py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-[#041424] via-[#020916] to-[#010207]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(249,115,22,0.15),transparent_65%)]" />
-        
+
         <div className="relative z-10 mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -730,7 +725,7 @@ export default function ServicesPage() {
           className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(34,211,238,0.15)_50%,transparent_100%)] bg-[length:200%_100%]"
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.2),transparent_70%)] blur-[120px]" />
-        
+
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -749,8 +744,8 @@ export default function ServicesPage() {
               href="https://wa.me/8465958825?text=Hello%20CLNS%2C%20I%20would%20like%20to%20book%20a%20consultation"
               target="_blank"
               rel="noopener noreferrer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               className="group relative inline-flex items-center gap-3 rounded-2xl border border-teal-400/50 bg-teal-500/20 px-10 py-5 text-lg font-semibold text-white backdrop-blur-xl transition-all hover:border-teal-400/70 hover:bg-teal-500/30 hover:shadow-[0_0_40px_rgba(34,211,238,0.5)]"
             >
               <span>Get Started</span>
@@ -771,7 +766,7 @@ export default function ServicesPage() {
                 className="absolute inset-0 rounded-2xl border border-teal-400/30"
               />
             </motion.a>
-            
+
             <div className="flex gap-4">
               <a
                 href="https://play.google.com/store/apps/details?id=com.clns.app"

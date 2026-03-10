@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Search, MapPin, Star, Filter, MessageSquare, Scale } from "lucide-react";
+import { Search, Filter, MessageSquare, Scale, BadgeCheck } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -17,6 +17,7 @@ interface Advocate {
     specialization: string;
     bio: string;
     verified: boolean;
+    imageUrl?: string | null;
 }
 
 interface FindLawyerContentProps {
@@ -103,8 +104,8 @@ export function FindLawyerContent({ initialAdvocates }: FindLawyerContentProps) 
                             key={filter}
                             onClick={() => setSelectedFilter(filter)}
                             className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${selectedFilter === filter
-                                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                                    : "bg-white/5 text-slate-400 border-white/10 hover:border-white/20 hover:text-white"
+                                ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                                : "bg-white/5 text-slate-400 border-white/10 hover:border-white/20 hover:text-white"
                                 }`}
                         >
                             {filter}
@@ -130,7 +131,7 @@ export function FindLawyerContent({ initialAdvocates }: FindLawyerContentProps) 
                             className="group flex flex-col sm:flex-row gap-5 rounded-xl border border-white/10 bg-white/5 p-5 hover:border-emerald-500/30 hover:bg-white/10 transition-all"
                         >
                             <Avatar className="h-24 w-24 shrink-0 border border-white/10">
-                                <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${advocate.email}`} />
+                                <AvatarImage src={advocate.imageUrl || `https://api.dicebear.com/7.x/initials/svg?seed=${advocate.email}`} />
                                 <AvatarFallback className={`${getColorClass(i)} text-white text-xl font-bold`}>
                                     {getInitials(advocate.name)}
                                 </AvatarFallback>
@@ -141,7 +142,9 @@ export function FindLawyerContent({ initialAdvocates }: FindLawyerContentProps) 
                                     <div>
                                         <h3 className="font-semibold text-white text-lg group-hover:text-emerald-400 transition-colors flex items-center gap-2">
                                             {advocate.name}
-                                            {advocate.verified && <span className="h-1.5 w-1.5 rounded-full bg-blue-500" title="Verified" />}
+                                            {advocate.verified && (
+                                                <BadgeCheck className="h-4 w-4 text-blue-400" aria-label="Verified Advocate" />
+                                            )}
                                         </h3>
                                         <p className="text-sm text-slate-400 flex items-center gap-1">
                                             <Scale className="h-3.5 w-3.5" />
@@ -160,14 +163,14 @@ export function FindLawyerContent({ initialAdvocates }: FindLawyerContentProps) 
                                     <p className="text-xs text-slate-400">Available</p>
                                     <p className="text-sm font-medium text-emerald-400">For Consultation</p>
                                 </div>
-                                <Button 
+                                <Button
                                     onClick={() => handleBookNow(advocate.id, advocate.name)}
                                     className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs h-9"
                                 >
                                     Book Now
                                 </Button>
-                                <Button 
-                                    variant="outline" 
+                                <Button
+                                    variant="outline"
                                     onClick={() => handleChat(advocate.email, advocate.name)}
                                     className="w-full border-white/10 hover:bg-white/10 text-slate-300 hover:text-white text-xs h-9"
                                 >

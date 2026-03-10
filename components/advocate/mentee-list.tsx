@@ -57,15 +57,20 @@ export function MenteeList({ mentees }: MenteeListProps) {
                             </div>
                         </div>
                     </div>
-                    <div className="pt-4 mt-4 border-t border-white/5 flex gap-2">
-                        <Button variant="outline" size="sm" className="flex-1 border-white/10 hover:bg-white/10 text-slate-300" asChild>
-                            <a href={`mailto:${student.email}`}>
-                                <Mail className="mr-2 h-3.5 w-3.5" />
-                                Email
-                            </a>
-                        </Button>
-                        <Button variant="secondary" size="sm" className="flex-1 bg-white/10 hover:bg-white/20 text-white">
+                    <div className="pt-4 mt-auto border-t border-white/5 flex gap-2">
+                        <Button
+                            variant="outline"
+                            className="w-full h-8 text-xs border-white/10 hover:bg-white/5 hover:text-white"
+                            onClick={() => window.open(`/dashboard/advocate/student/${student.id}`, "_blank")}
+                        >
                             View Profile
+                        </Button>
+                        <Button
+                            className="w-full h-8 text-xs bg-emerald-600 hover:bg-emerald-500 text-white"
+                            onClick={() => window.location.href = `mailto:${student.email}?subject=Mentorship%20Update`}
+                        >
+                            <Mail className="mr-1.5 h-3 w-3" />
+                            Message
                         </Button>
                     </div>
                 </Card>

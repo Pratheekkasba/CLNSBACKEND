@@ -77,25 +77,16 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                         if (existingUser.status === "REJECTED" || existingUser.status === "SUSPENDED") {
                             return false; // Block sign in
                         }
-                        // Update user image if available
-                        if (user.image && !existingUser.imageUrl) {
-                            await db.user.update({
-                                where: { id: existingUser.id },
-                                data: { imageUrl: user.image }
-                            });
-                        }
                         return true;
                     } else {
                         // Create new user from Google account
-                        // Default role to PROSPECT, user can update later
                         const newUser = await db.user.create({
                             data: {
                                 email: user.email,
                                 name: user.name || (profile as any)?.name || "User",
-                                password: await bcrypt.hash(Math.random().toString(36), 10), // Random password for OAuth users
+                                password: await bcrypt.hash(Math.random().toString(36), 10),
                                 role: "PROSPECT",
                                 status: "ACTIVE",
-                                imageUrl: user.image || (profile as any)?.picture || null,
                             }
                         });
 

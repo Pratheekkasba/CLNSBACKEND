@@ -2,11 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
-export const revalidate = 0;
-
-export async function GET(request: Request) {
+export async function GET() {
     try {
         const session = await auth();
 

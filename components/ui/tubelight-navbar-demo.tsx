@@ -13,7 +13,7 @@ const navItems = [
 ];
 
 export function NavBarDemo() {
-  return <NavBar items={navItems} />;
+  return <NavBar items={navItems} showAuthButtons={false} />;
 }
 
 

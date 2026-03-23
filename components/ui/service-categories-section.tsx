@@ -133,10 +133,10 @@ function ServiceCategoryCard({
 
         {/* Explore Button - Enhanced hover */}
         <Link
-          href={`/services#${category.hash}`}
-          className="mt-auto inline-flex items-center justify-center rounded-full border border-teal-500/50 bg-transparent px-6 py-2.5 text-sm font-medium text-teal-400 transition-all duration-200 ease-out hover:border-teal-400 hover:bg-teal-500/20 hover:text-teal-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)]"
+          href="/signup"
+          className="mt-auto inline-flex items-center justify-center rounded-full border border-teal-500/50 bg-transparent px-6 py-2.5 text-sm font-medium text-teal-400 transition-all duration-200 ease-out hover:border-teal-400 hover:bg-teal-500/20 hover:text-teal-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] text-center"
         >
-          Explore
+          Create Account / Login
         </Link>
       </div>
     </motion.div>

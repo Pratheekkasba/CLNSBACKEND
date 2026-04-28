@@ -33,19 +33,7 @@ const affiliations = [
       logoGlow: "group-hover:shadow-[0_0_20px_rgba(251,191,36,0.35)] group-hover:border-amber-400/40",
     },
   },
-  {
-    title: "Ratan Tata Innovation Hub",
-    logo: "/affiliations/rtih-logo.png",
-    description: "A premier innovation hub backed by Ratan Tata's legacy. CLNS partners with RTIH to bring cutting-edge legal frameworks to innovative businesses, ensuring compliance and IP protection at scale.",
-    highlight: {
-      border: "border-purple-400/50",
-      glow: "from-purple-400/50 via-violet-500/30 to-purple-600/40",
-      badge: "bg-purple-500/15 text-purple-300 border-purple-400/30",
-      divider: "via-purple-400",
-      title: "group-hover:text-purple-300",
-      logoGlow: "group-hover:shadow-[0_0_20px_rgba(192,132,252,0.35)] group-hover:border-purple-400/40",
-    },
-  },
+
   {
     title: "United Nations",
     logo: "/affiliations/un-logo.jpeg",
@@ -195,9 +183,9 @@ export default function AffiliationPage() {
           </p>
         </motion.header>
 
-        {/* Featured 3 — T-Hub, WEHub, RTIH */}
-        <div className="grid gap-4 sm:grid-cols-3 mb-4">
-          {affiliations.slice(0, 3).map((item, index) => (
+        {/* Featured 2 — T-Hub, WEHub */}
+        <div className="grid gap-4 sm:grid-cols-2 mb-4">
+          {affiliations.slice(0, 2).map((item, index) => (
             <motion.div
               key={item.title}
               variants={cardVariants}
@@ -237,7 +225,7 @@ export default function AffiliationPage() {
 
         {/* Standard 5 cards */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {affiliations.slice(3).map((item, index) => (
+          {affiliations.slice(2).map((item, index) => (
             <motion.div
               key={item.title}
               variants={cardVariants}

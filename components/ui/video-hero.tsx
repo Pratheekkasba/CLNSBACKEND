@@ -154,7 +154,7 @@ export function VideoHero() {
         
         <div className="hero-item-4 mt-4 sm:mt-6 flex w-full justify-center px-4">
           <a
-            href="https://calendly.com/clns-legal/30min"
+            href="https://calendly.com/get-clns/30min"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-full bg-[#2563eb] px-6 py-3 sm:px-8 sm:py-3.5 md:px-10 md:py-4 text-sm sm:text-base font-semibold text-white shadow-[0_20px_50px_rgba(37,99,235,0.5)] transition-all duration-200 ease-out hover:brightness-110 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#2563eb] focus-visible:ring-offset-[#020817] w-full sm:w-auto"
